@@ -1,0 +1,20 @@
+<?php
+return [
+    "users" => "Usuarios",
+    "name" => "Nombre",
+    "email" => "Correo",
+    "password" => "Contraseña",
+    "password_confirmation" => "Confirmación de contraseña",
+    "country" => "País",
+    "state" => "Estado",
+    "city" => "Ciudad",
+    "create_user" => "Crear usuario",
+    "edit_user" => "Editar usuario",
+    "delete_user" => "Eliminar usuario",
+    "search_by_name" => "Buscar por nombre",
+    "select_country" => "Seleccione un país",
+    "select_state" => "Seleccione un estado",
+    "select_city" => "Seleccione una ciudad",
+    "updated_confirmation" => "¿Estás seguro de actualizar este usuario llamado",
+    "deleted_confirmation" => "¿Estás seguro de eliminar este usuario llamado",
+];
