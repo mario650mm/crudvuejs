@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\City;
-use App\Country;
-use App\State;
 use App\User;
 use Illuminate\Http\Request;
 
@@ -28,10 +25,10 @@ class UserController extends Controller
         $page = $request->currentPage;
         $results = User::where('name', 'like', "%$request->name%")
             ->orderBy('updated_at', 'DESC')->latest()->paginate(10);
-        foreach ($results as $result){
-            $result->cityName  = $result->city != null ? $result->city->name:"";
-            $result->stateName  = $result->state != null ? $result->state->name:"";
-            $result->countryName  = $result->country != null ? $result->country->name:"";
+        foreach ($results as $result) {
+            $result->cityName = $result->city != null ? $result->city->name : "";
+            $result->stateName = $result->state != null ? $result->state->name : "";
+            $result->countryName = $result->country != null ? $result->country->name : "";
         }
         $response = [
             'pagination' => [
@@ -90,8 +87,7 @@ class UserController extends Controller
             "name" => "required",
             "email" => "required",
             "countrys" => "required",
-            "states" => "required",
-            "citys" => "required"
+            "states" => "required"
         ];
         $messages = [];
         if ($method == "store") {
@@ -100,17 +96,15 @@ class UserController extends Controller
                 "password_confirmation" => "required|min:6",
             ];
             $mensajes = [];
-            $reglas = array_merge($rules, $reglas);
-            $mensajes = array_merge($messages, $mensajes);
         } else {
             $reglas = [
                 "password" => "nullable|confirmed|min:6",
                 "password_confirmation" => "nullable|min:6",
             ];
             $mensajes = [];
-            $reglas = array_merge($rules, $reglas);
-            $mensajes = array_merge($messages, $mensajes);
         }
+        $reglas = array_merge($rules, $reglas);
+        $mensajes = array_merge($messages, $mensajes);
         $this->validate($request, $reglas, $mensajes);
     }
 
@@ -118,24 +112,24 @@ class UserController extends Controller
     {
         $user->name = $request->name;
         $user->email = $request->email;
-        if($request->password != null & $request->password_confirmation != null){
+        if ($request->password != null & $request->password_confirmation != null) {
             $user->password = bcrypt($request->password);
         }
         $user->country_id = $request->countrys;
         $user->state_id = $request->states;
-        $user->city_id = $request->citys;
+        $user->city_id = $request->citys != null ? $request->citys : null;
         $user->save();
     }
 
     public function destroy($id)
     {
         $user = User::find($id);
-        if($user != null){
+        if ($user != null) {
             $user->delete();
-            return redirect('/users/list')->with('warning',trans('messages.general_user_message_p1') .
+            return redirect('/users/list')->with('warning', trans('messages.general_user_message_p1') .
                 ' ' . $user->name . ' ' . trans('messages.deleted_general_message'));
-        }else{
-            return redirect('/users/list')->with('warning',trans('messages.general_user_message_p1') .
+        } else {
+            return redirect('/users/list')->with('warning', trans('messages.general_user_message_p1') .
                 ' ' . trans('messages.exists_general_message'));
         }
     }
